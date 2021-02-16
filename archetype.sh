@@ -64,7 +64,7 @@ preinstallmsg() {
 
 # Adds user "$name" with password $pass1.
 adduserandpass() {
-    dialog --infobox "Adding user \"$name\"..." 4 50
+    dialog --infobox "\\nAdding user \"$name\"..." 5 50
     useradd -m -g wheel -s /bin/zsh "$name" >/dev/null 2>&1 ||
     usermod -a -G wheel "$name" && mkdir -p /home/"$name" && chown "$name":wheel /home/"$name"
     repodir="/home/$name/.local/src"; mkdir -p "$repodir"; chown -R "$name":wheel "$(dirname "$repodir")"
@@ -73,7 +73,7 @@ adduserandpass() {
 }
 
 refreshkeys() {
-    dialog --infobox "Refreshing Arch Keyring..." 4 40
+    dialog --infobox "\\nRefreshing Arch Keyring..." 5 40
     pacman --noconfirm -S archlinux-keyring >/dev/null 2>&1
 }
 
@@ -86,7 +86,7 @@ newperms() {
 # Installs $1 manually if not installed. Used only for AUR helper here.
 manualinstall() {
     [ -f "/usr/bin/$1" ] || (
-    dialog --infobox "Installing \"$1\", an AUR helper..." 4 50
+    dialog --infobox "\\nInstalling \"$1\", an AUR helper..." 5 50
     cd /tmp || exit 1
     rm -rf /tmp/"$1"*
     curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
@@ -138,7 +138,7 @@ putgitrepo() {
 
 # Clones the Archetype repository.
 clonearchetype() {
-    dialog --infobox "Cloning the Archetype..." 4 60
+    dialog --infobox "\\nCloning the Archetype..." 5 60
     putgitrepo "$archetyperepo" "/home/$name/.archetype" "$repobranch"
 }
 
@@ -163,12 +163,12 @@ installationloop() {
 }
 
 installdotfiles() {
-    dialog --infobox "Installing dotfiles..." 4 60
+    dialog --infobox "\\nInstalling dotfiles..." 5 60
     sudo -u "$name" cp -af /home/"$name"/.archetype/dotfiles/. /home/"$name"
 }
 
 systembeepoff() { 
-    dialog --infobox "Getting rid of the error beep sound..." 10 50
+    dialog --infobox "\\nGetting rid of the error beep sound..." 5 50
     rmmod pcspkr
     echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf
 }
@@ -178,8 +178,9 @@ calculatepercentage() {
 }
 
 finalize() {
-    dialog --infobox "Preparing welcome message..." 4 50
-    dialog --title "All done!" --msgbox "Congrats! Provided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment, log out and log back in as your new user, then run the command \"startx\" to start the graphical environment (it will start automatically in tty1).\\n" 12 80
+    dialog --infobox "\\nPreparing welcome message..." 5 50
+    dialog --title "All done!" --msgbox "\\nCongrats! Provided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment, log out and log back in as your new user, then run the command \"startx\" to start the graphical environment (it will start automatically in tty1).\\n" 13 80
+    dialog --title "$title" --yesno "\\nWould you like to keep local Archetype repository? This will allow you to update and syncronize dotfiles and programs to install with remote Archetype repository." 10 70 || yes | rm -r /home/"$name"/.archetype
 }
 
 ### THE ACTUAL SCRIPT ###
@@ -211,7 +212,7 @@ for x in curl base-devel git ntp zsh; do
     installpkg "$x"
 done
 
-dialog --title "$title" --infobox "\\nSynchronizing system time to ensure successful and secure installation of software..." 4 70
+dialog --title "$title" --infobox "\\nSynchronizing system time to ensure successful and secure installation of software..." 6 70
 ntpdate 0.us.pool.ntp.org >/dev/null 2>&1
 
 adduserandpass || error "Error adding username and/or password."

@@ -16,7 +16,7 @@ esac done
 
 pacman -Sy --noconfirm dialog || { echo "Error at script start: Are you sure you're running this as the root user? Are you sure you have an internet connection?"; exit; }
 
-dialog --defaultno --title "WARNING!" --yesno "Running this script will delete your entire /dev/sda and reinstall Arch.\n\nTo stop this script, press no. To continue, press yes."  10 60 || exit
+dialog --defaultno --title "WARNING!" --yesno "\\nRunning this script will delete your entire /dev/sda and reinstall Arch.\n\nTo stop this script, press no. To continue, press yes."  10 60 || exit
 
 dialog --no-cancel --inputbox "Enter a name for your computer." 10 60 2> comp
 
@@ -78,7 +78,7 @@ cat tz.tmp > /mnt/tzfinal.tmp
 rm tz.tmp
 mv comp /mnt/etc/hostname
 
-curl https://raw.githubusercontent.com/nikolichnik/archetype/master/arch/chroot.sh > /mnt/chroot.sh && arch-chroot /mnt bash chroot.sh -r "$archetyperepo" -b "$repobranch" -a "$aurhelper" && rm /mnt/chroot.sh
+curl https://raw.githubusercontent.com/nikolichnik/archetype/master/arch/chroot.sh > /mnt/chroot.sh && arch-chroot /mnt bash chroot.sh "$archetyperepo" "$repobranch" "$aurhelper" && rm /mnt/chroot.sh
 
 dialog --defaultno --title "Final Qs" --yesno "\\nReboot computer?"  5 30 && reboot
 dialog --defaultno --title "Final Qs" --yesno "\\nReturn to chroot environment?"  6 30 && arch-chroot /mnt
