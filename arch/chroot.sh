@@ -25,4 +25,4 @@ archetype() {
     curl -O https://raw.githubusercontent.com/nikolichnik/archetype/master/archetype.sh && bash archetype.sh -r "$1" -b "$2" -a "$3" 
 }
 
-dialog --title "Archetype setup" --yesno "\\nArchetype install script will automatically install a full Arch Linux based desktop environment.\n\nIf you'd like to install this, select yes, otherwise select no." 15 60 && archetype $1 $2 $3
+dialog --title "Archetype setup" --yesno "\\nArchetype install script will automatically install a full Arch Linux based desktop environment.\n\nIf you'd like to install this, select yes, otherwise select no." 13 60 && archetype $1 $2 $3
