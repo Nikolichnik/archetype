@@ -142,7 +142,7 @@ putgitrepo() {
 
 # Clones the Archetype repository.
 clonearchetype() {
-    dialog --title "$title" --infobox "\\nCloning the Archetype..." 6 70
+    dialog --title "$title" --infobox "\\nCloning the Archetype repository..." 6 70
     git ls-remote "$archetyperepo" || error "Invalid Archetype repository."
     putgitrepo "$archetyperepo" "/home/$name/.archetype" "$repobranch"
 }
@@ -184,7 +184,7 @@ calculatepercentage() {
 
 finalize() {
     dialog --title "All done!" --msgbox "\\nCongrats! Provided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment, log out and log back in as your new user, then run the command \"startx\" to start the graphical environment (it will start automatically in tty1).\\n" 14 70
-    dialog --title "$title" --yesno "\\nWould you like to keep local Archetype repository?\\n\\nThis will allow you to update and syncronize dotfiles and programs to install with remote Archetype repository." 14 70 || yes | rm -r /home/"$name"/.archetype
+    dialog --title "$title" --yesno "\\nWould you like to keep local Archetype repository?\\n\\nThis will allow you to update and syncronize dotfiles and programs to install with a remote Archetype repository." 14 70 || yes | rm -r /home/"$name"/.archetype
 }
 
 ### THE ACTUAL SCRIPT ###
