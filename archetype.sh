@@ -59,7 +59,7 @@ getuserandpass() {
 
 usercheck() {
     ! { id -u "$name" >/dev/null 2>&1; } ||
-    dialog --colors --title "WARNING!" --yes-label "CONTINUE" --no-label "No wait..." --yesno "\\nThe user \"$name\" already exists on this system. Archetype can install for a user already existing, but it will \\Zboverwrite\\Zn any conflicting settings/dotfiles on the user account.\\n\\nArchetype will \\Zbnot\\Zn overwrite your user files, documents, videos, etc., so don't worry about that, but only click <CONTINUE> if you don't mind your settings being overwritten.\\n\\nNote also that Archetype will change $name's password to the one you just gave." 14 70
+    dialog --colors --title "WARNING!" --yes-label "CONTINUE" --no-label "No wait..." --yesno "\\nThe user \"$name\" already exists on this system. Archetype can install for a user already existing, but it will \\Zboverwrite\\Zn any conflicting settings/dotfiles on the user account.\\n\\nArchetype will \\Zbnot\\Zn overwrite your user files, documents, videos, etc., so don't worry about that, but only click <CONTINUE> if you don't mind your settings being overwritten.\\n\\nNote also that Archetype will change $name's password to the one you just gave." 16 70
 }
 
 preinstallmsg() {
@@ -110,7 +110,7 @@ gitmakeinstall() {
     progname="$(basename "$1" .git)"
     dir="$repodir/$progname"
     branch="${2:-master}"
-    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling \"$progname\", branch \"$branch\", via \"git\" and \"make\". $(basename "$1") $3" 10 70
+    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling \"$progname\", branch \"$branch\", via \"git\" and \"make\". $(basename "$1") $3" 13 70
     sudo -u "$name" git clone -b "$branch" --depth 1 "$1" "$dir" >/dev/null 2>&1 || { cd "$dir" || return 1 ; sudo -u "$name" git pull --force origin "$branch";}
     cd "$dir" || exit 1
     make >/dev/null 2>&1
@@ -119,13 +119,13 @@ gitmakeinstall() {
 }
 
 aurinstall() {
-    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling \"$1\" from the AUR. $1 $2" 10 70
+    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling \"$1\" from the AUR. $1 $2" 13 70
     echo "$aurinstalled" | grep -q "^$1$" && return 1
     sudo -u "$name" $aurhelper -S --noconfirm "$1" >/dev/null 2>&1
 }
 
 pipinstall() {
-    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling the Python package \"$1\". $1 $2" 10 70
+    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling the Python package \"$1\". $1 $2" 13 70
     [ -x "$(command -v "pip")" ] || installpkg python-pip >/dev/null 2>&1
     yes | pip install "$1"
 }
@@ -213,7 +213,7 @@ preinstallmsg || error "User exited."
 refreshkeys || error "Error automatically refreshing Arch keyring. Consider doing so manually."
 
 for x in curl base-devel git ntp zsh; do
-    dialog --title "$title" --infobox "\\nInstalling \"$x\" which is required to install and configure other programs." 5 70
+    dialog --title "$title" --infobox "\\nInstalling \"$x\" which is required to install and configure other programs." 6 70
     installpkg "$x"
 done
 
