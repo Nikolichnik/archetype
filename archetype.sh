@@ -35,31 +35,31 @@ error() {
 }
 
 welcomemsg() {
-    dialog --title "Welcome to Archetype!" --msgbox "\\nThis script will automatically install a fully-featured Linux desktop, including all the dependencies and programs specified in the programs.csv file and accompanying dotfiles.\\n" 10 60
-    dialog --colors --title "Important Note!" --yes-label "All ready!" --no-label "Return..." --yesno "\\nBe sure the computer you are using has current pacman updates and refreshed Arch keyrings.\\n\\nIf it does not, the installation of some programs might fail." 8 70
+    dialog --title "Welcome to Archetype!" --msgbox "\\nThis script will automatically install a fully-featured Linux desktop, including all the dependencies and programs specified in the programs.csv file and accompanying dotfiles.\\n" 11 60
+    dialog --title "Important Note!" --colors --yes-label "All ready!" --no-label "Return..." --yesno "\\nBe sure the computer you are using has current pacman updates and refreshed Arch keyrings.\\n\\nIf it does not, the installation of some programs might fail." 13 70
 }
 
 # Prompts user for new username an password.
 getuserandpass() {
-    name=$(dialog --title "$title" --inputbox "First, please enter a name for the user account." 10 60 3>&1 1>&2 2>&3 3>&1) || exit 1
+    name=$(dialog --title "$title" --inputbox "\\nFirst, please enter a name for the user account." 11 60 3>&1 1>&2 2>&3 3>&1) || exit 1
 
     while ! echo "$name" | grep -q "^[a-z_][a-z0-9_-]*$"; do
-        name=$(dialog --title "$title" --no-cancel --inputbox "Username not valid. Give a username beginning with a letter, with only lowercase letters, - or _." 10 60 3>&1 1>&2 2>&3 3>&1)
+        name=$(dialog --title "$title" --no-cancel --inputbox "\\nUsername not valid. Give a username beginning with a letter, with only lowercase letters, - or _." 11 60 3>&1 1>&2 2>&3 3>&1)
     done
 
-    pass1=$(dialog --title "$title" --no-cancel --passwordbox "Enter a password for that user." 10 60 3>&1 1>&2 2>&3 3>&1)
-    pass2=$(dialog --title "$title" --no-cancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
+    pass1=$(dialog --title "$title" --no-cancel --passwordbox "\\nEnter a password for that user." 11 60 3>&1 1>&2 2>&3 3>&1)
+    pass2=$(dialog --title "$title" --no-cancel --passwordbox "\\nRetype password." 11 60 3>&1 1>&2 2>&3 3>&1)
 
     while ! [ "$pass1" = "$pass2" ]; do
         unset pass2
-        pass1=$(dialog --title "$title" --no-cancel --passwordbox "Passwords do not match.\\n\\nEnter password again." 10 60 3>&1 1>&2 2>&3 3>&1)
-        pass2=$(dialog --title "$title" --no-cancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
+        pass1=$(dialog --title "$title" --no-cancel --passwordbox "\\nPasswords do not match.\\n\\nEnter password again." 11 60 3>&1 1>&2 2>&3 3>&1)
+        pass2=$(dialog --title "$title" --no-cancel --passwordbox "\\nRetype password." 11 60 3>&1 1>&2 2>&3 3>&1)
     done
 }
 
 usercheck() {
     ! { id -u "$name" >/dev/null 2>&1; } ||
-    dialog --colors --title "WARNING!" --yes-label "CONTINUE" --no-label "No wait..." --yesno "\\nThe user \"$name\" already exists on this system. Archetype can install for a user already existing, but it will \\Zboverwrite\\Zn any conflicting settings/dotfiles on the user account.\\n\\nArchetype will \\Zbnot\\Zn overwrite your user files, documents, videos, etc., so don't worry about that, but only click <CONTINUE> if you don't mind your settings being overwritten.\\n\\nNote also that Archetype will change $name's password to the one you just gave." 16 70
+    dialog --title "WARNING!" --colors --yes-label "CONTINUE" --no-label "No wait..." --yesno "\\nThe user \"$name\" already exists on this system. Archetype can install for a user already existing, but it will \\Zboverwrite\\Zn any conflicting settings/dotfiles on the user account.\\n\\nArchetype will \\Zbnot\\Zn overwrite your user files, documents, videos, etc., so don't worry about that, but only click <CONTINUE> if you don't mind your settings being overwritten.\\n\\nNote also that Archetype will change $name's password to the one you just gave." 16 70
 }
 
 preinstallmsg() {
@@ -68,7 +68,7 @@ preinstallmsg() {
 
 # Adds user "$name" with password $pass1.
 adduserandpass() {
-    dialog --title "$title" --infobox "\\nAdding user \"$name\"..." 5 50
+    dialog --title "$title" --infobox "\\nAdding user \"$name\"..." 6 70
     useradd -m -g wheel -s /bin/zsh "$name" >/dev/null 2>&1 ||
     usermod -a -G wheel "$name" && mkdir -p /home/"$name" && chown "$name":wheel /home/"$name"
     repodir="/home/$name/.local/src"; mkdir -p "$repodir"; chown -R "$name":wheel "$(dirname "$repodir")"
@@ -77,7 +77,7 @@ adduserandpass() {
 }
 
 refreshkeys() {
-    dialog --title "$title" --infobox "\\nRefreshing Arch Keyring..." 5 40
+    dialog --title "$title" --infobox "\\nRefreshing Arch Keyring..." 6 70
     pacman --noconfirm -S archlinux-keyring >/dev/null 2>&1
 }
 
@@ -90,7 +90,7 @@ newperms() {
 # Installs $1 manually if not installed. Used only for AUR helper here.
 manualinstall() {
     [ -f "/usr/bin/$1" ] || (
-    dialog --title "$title" --infobox "\\nInstalling \"$1\", an AUR helper..." 5 50
+    dialog --title "$title" --infobox "\\nInstalling \"$1\", an AUR helper..." 6 70
     cd /tmp || exit 1
     rm -rf /tmp/"$1"*
     curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
@@ -142,7 +142,7 @@ putgitrepo() {
 
 # Clones the Archetype repository.
 clonearchetype() {
-    dialog --title "$title" --infobox "\\nCloning the Archetype..." 5 60
+    dialog --title "$title" --infobox "\\nCloning the Archetype..." 6 70
     git ls-remote "$archetyperepo" || error "Invalid Archetype repository."
     putgitrepo "$archetyperepo" "/home/$name/.archetype" "$repobranch"
 }
@@ -168,12 +168,12 @@ installationloop() {
 }
 
 installdotfiles() {
-    dialog --title "$title" --infobox "\\nInstalling dotfiles..." 5 60
+    dialog --title "$title" --infobox "\\nInstalling dotfiles..." 6 70
     sudo -u "$name" cp -af /home/"$name"/.archetype/dotfiles/. /home/"$name"
 }
 
 systembeepoff() { 
-    dialog --title "$title" --infobox "\\nGetting rid of the error beep sound..." 5 50
+    dialog --title "$title" --infobox "\\nGetting rid of the error beep sound..." 6 70
     rmmod pcspkr
     echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf
 }
@@ -183,7 +183,6 @@ calculatepercentage() {
 }
 
 finalize() {
-    dialog --title "$title" --infobox "\\nPreparing welcome message..." 5 50
     dialog --title "All done!" --msgbox "\\nCongrats! Provided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment, log out and log back in as your new user, then run the command \"startx\" to start the graphical environment (it will start automatically in tty1).\\n" 13 80
     dialog --title "$title" --yesno "\\nWould you like to keep local Archetype repository? This will allow you to update and syncronize dotfiles and programs to install with remote Archetype repository." 10 70 || yes | rm -r /home/"$name"/.archetype
 }
