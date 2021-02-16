@@ -35,8 +35,8 @@ error() {
 }
 
 welcomemsg() {
-    dialog --title "Welcome to Archetype!" --msgbox "\\nThis script will automatically install a fully-featured Linux desktop, including all the dependencies and programs specified in the programs.csv file and accompanying dotfiles.\\n" 13 70
-    dialog --title "Important Note!" --colors --yes-label "All ready!" --no-label "Return..." --yesno "\\nBe sure the computer you are using has current pacman updates and refreshed Arch keyrings.\\n\\nIf it does not, the installation of some programs might fail." 13 70
+    dialog --title "Welcome to Archetype!" --msgbox "\\nThis script will automatically install a fully-featured Linux desktop, including all the dependencies and programs specified in the programs.csv file and accompanying dotfiles.\\n" 11 70
+    dialog --title "Important Note!" --colors --yes-label "All ready!" --no-label "Return..." --yesno "\\nBe sure the computer you are using has current pacman updates and refreshed Arch keyrings.\\n\\nIf it does not, the installation of some programs might fail." 11 70
 }
 
 # Prompts user for new username an password.
@@ -102,7 +102,7 @@ manualinstall() {
 
 # Installs all needed programs from main repo.
 maininstall() {
-    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling \"$1\". $1 $2" 13 70
+    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling \"$1\". $1 $2" 11 70
     installpkg "$1"
 }
 
@@ -110,7 +110,7 @@ gitmakeinstall() {
     progname="$(basename "$1" .git)"
     dir="$repodir/$progname"
     branch="${2:-master}"
-    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling \"$progname\", branch \"$branch\", via \"git\" and \"make\". $(basename "$1") $3" 13 70
+    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling \"$progname\", branch \"$branch\", via \"git\" and \"make\". $(basename "$1") $3" 11 70
     sudo -u "$name" git clone -b "$branch" --depth 1 "$1" "$dir" >/dev/null 2>&1 || { cd "$dir" || return 1 ; sudo -u "$name" git pull --force origin "$branch";}
     cd "$dir" || exit 1
     make >/dev/null 2>&1
@@ -119,13 +119,13 @@ gitmakeinstall() {
 }
 
 aurinstall() {
-    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling \"$1\" from the AUR. $1 $2" 13 70
+    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling \"$1\" from the AUR. $1 $2" 11 70
     echo "$aurinstalled" | grep -q "^$1$" && return 1
     sudo -u "$name" $aurhelper -S --noconfirm "$1" >/dev/null 2>&1
 }
 
 pipinstall() {
-    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling the Python package \"$1\". $1 $2" 13 70
+    calculatepercentage $n $total | dialog --title "$title" --gauge "\\nInstalling the Python package \"$1\". $1 $2" 11 70
     [ -x "$(command -v "pip")" ] || installpkg python-pip >/dev/null 2>&1
     yes | pip install "$1"
 }
@@ -184,7 +184,7 @@ calculatepercentage() {
 
 finalize() {
     dialog --title "All done!" --msgbox "\\nCongrats! Provided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment, log out and log back in as your new user, then run the command \"startx\" to start the graphical environment (it will start automatically in tty1).\\n" 14 70
-    dialog --title "$title" --yesno "\\nWould you like to keep local Archetype repository?\\n\\nThis will allow you to update and syncronize dotfiles and programs to install with remote Archetype repository." 13 70 || yes | rm -r /home/"$name"/.archetype
+    dialog --title "$title" --yesno "\\nWould you like to keep local Archetype repository?\\n\\nThis will allow you to update and syncronize dotfiles and programs to install with remote Archetype repository." 14 70 || yes | rm -r /home/"$name"/.archetype
 }
 
 ### THE ACTUAL SCRIPT ###
