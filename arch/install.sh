@@ -80,7 +80,7 @@ mv comp /mnt/etc/hostname
 
 curl https://raw.githubusercontent.com/nikolichnik/archetype/master/arch/chroot.sh > /mnt/chroot.sh && arch-chroot /mnt bash chroot.sh "$archetyperepo" "$repobranch" "$aurhelper" && rm /mnt/chroot.sh
 
-dialog --defaultno --title "Final Qs" --yesno "\\nReboot computer?"  5 30 && reboot
-dialog --defaultno --title "Final Qs" --yesno "\\nReturn to chroot environment?"  6 30 && arch-chroot /mnt
+dialog --defaultno --title "Final Qs" --yesno "\\nReboot computer?"  7 30 && reboot
+dialog --defaultno --title "Final Qs" --yesno "\\nReturn to chroot environment?"  7 30 && arch-chroot /mnt
 
 clear
