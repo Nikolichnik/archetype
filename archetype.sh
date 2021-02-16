@@ -35,35 +35,35 @@ error() {
 }
 
 welcomemsg() {
-    dialog --title "Welcome to Archetype!" --msgbox "\\nThis script will automatically install a fully-featured Linux desktop, including all the dependencies and programs specified in the programs.csv file and accompanying dotfiles.\\n" 11 60
+    dialog --title "Welcome to Archetype!" --msgbox "\\nThis script will automatically install a fully-featured Linux desktop, including all the dependencies and programs specified in the programs.csv file and accompanying dotfiles.\\n" 13 70
     dialog --title "Important Note!" --colors --yes-label "All ready!" --no-label "Return..." --yesno "\\nBe sure the computer you are using has current pacman updates and refreshed Arch keyrings.\\n\\nIf it does not, the installation of some programs might fail." 13 70
 }
 
 # Prompts user for new username an password.
 getuserandpass() {
-    name=$(dialog --title "$title" --inputbox "\\nFirst, please enter a name for the user account." 11 60 3>&1 1>&2 2>&3 3>&1) || exit 1
+    name=$(dialog --title "$title" --inputbox "\\nFirst, please enter a name for the user account." 11 70 3>&1 1>&2 2>&3 3>&1) || exit 1
 
     while ! echo "$name" | grep -q "^[a-z_][a-z0-9_-]*$"; do
-        name=$(dialog --title "$title" --no-cancel --inputbox "\\nUsername not valid. Give a username beginning with a letter, with only lowercase letters, - or _." 11 60 3>&1 1>&2 2>&3 3>&1)
+        name=$(dialog --title "$title" --no-cancel --inputbox "\\nUsername not valid. Give a username beginning with a letter, with only lowercase letters, - or _." 11 70 3>&1 1>&2 2>&3 3>&1)
     done
 
-    pass1=$(dialog --title "$title" --no-cancel --passwordbox "\\nEnter a password for that user." 11 60 3>&1 1>&2 2>&3 3>&1)
-    pass2=$(dialog --title "$title" --no-cancel --passwordbox "\\nRetype password." 11 60 3>&1 1>&2 2>&3 3>&1)
+    pass1=$(dialog --title "$title" --no-cancel --passwordbox "\\nEnter a password for that user." 11 70 3>&1 1>&2 2>&3 3>&1)
+    pass2=$(dialog --title "$title" --no-cancel --passwordbox "\\nRetype password." 11 70 3>&1 1>&2 2>&3 3>&1)
 
     while ! [ "$pass1" = "$pass2" ]; do
         unset pass2
-        pass1=$(dialog --title "$title" --no-cancel --passwordbox "\\nPasswords do not match.\\n\\nEnter password again." 11 60 3>&1 1>&2 2>&3 3>&1)
-        pass2=$(dialog --title "$title" --no-cancel --passwordbox "\\nRetype password." 11 60 3>&1 1>&2 2>&3 3>&1)
+        pass1=$(dialog --title "$title" --no-cancel --passwordbox "\\nPasswords do not match.\\n\\nEnter password again." 11 70 3>&1 1>&2 2>&3 3>&1)
+        pass2=$(dialog --title "$title" --no-cancel --passwordbox "\\nRetype password." 11 70 3>&1 1>&2 2>&3 3>&1)
     done
 }
 
 usercheck() {
     ! { id -u "$name" >/dev/null 2>&1; } ||
-    dialog --title "WARNING!" --colors --yes-label "CONTINUE" --no-label "No wait..." --yesno "\\nThe user \"$name\" already exists on this system. Archetype can install for a user already existing, but it will \\Zboverwrite\\Zn any conflicting settings/dotfiles on the user account.\\n\\nArchetype will \\Zbnot\\Zn overwrite your user files, documents, videos, etc., so don't worry about that, but only click <CONTINUE> if you don't mind your settings being overwritten.\\n\\nNote also that Archetype will change $name's password to the one you just gave." 16 70
+    dialog --title "WARNING!" --colors --yes-label "CONTINUE" --no-label "No wait..." --yesno "\\nThe user \"$name\" already exists on this system. Archetype can install for a user already existing, but it will \\Zboverwrite\\Zn any conflicting settings/dotfiles on the user account.\\n\\nArchetype will \\Zbnot\\Zn overwrite your user files, documents, videos, etc., so don't worry about that, but only click <CONTINUE> if you don't mind your settings being overwritten.\\n\\nNote also that Archetype will change $name's password to the one you just gave." 17 70
 }
 
 preinstallmsg() {
-    dialog --title "Let's get this party started!" --yes-label "Let's go!" --no-label "No, nevermind!" --yesno "\\nThe rest of the installation will now be totally automated, so you can sit back and relax.\\n\\nIt will take some time, but when done, you can relax even more with your complete system.\\n\\nNow just press <Let's go!> and the system will begin installation!" 13 60 || { clear; exit 1; }
+    dialog --title "Let's get this party started!" --yes-label "Let's go!" --no-label "No, nevermind!" --yesno "\\nThe rest of the installation will now be totally automated, so you can sit back and relax.\\n\\nIt will take some time, but when done, you can relax even more with your complete system.\\n\\nNow just press <Let's go!> and the system will begin installation!" 15 70 || { clear; exit 1; }
 }
 
 # Adds user "$name" with password $pass1.
@@ -183,8 +183,8 @@ calculatepercentage() {
 }
 
 finalize() {
-    dialog --title "All done!" --msgbox "\\nCongrats! Provided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment, log out and log back in as your new user, then run the command \"startx\" to start the graphical environment (it will start automatically in tty1).\\n" 13 80
-    dialog --title "$title" --yesno "\\nWould you like to keep local Archetype repository? This will allow you to update and syncronize dotfiles and programs to install with remote Archetype repository." 10 70 || yes | rm -r /home/"$name"/.archetype
+    dialog --title "All done!" --msgbox "\\nCongrats! Provided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment, log out and log back in as your new user, then run the command \"startx\" to start the graphical environment (it will start automatically in tty1).\\n" 14 70
+    dialog --title "$title" --yesno "\\nWould you like to keep local Archetype repository?\\n\\nThis will allow you to update and syncronize dotfiles and programs to install with remote Archetype repository." 13 70 || yes | rm -r /home/"$name"/.archetype
 }
 
 ### THE ACTUAL SCRIPT ###
