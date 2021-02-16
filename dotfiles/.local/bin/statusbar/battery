@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Prints all batteries, their percentage remaining
+
+case $BLOCK_BUTTON in
+	4) xbacklight -inc 10 ;;
+	5) xbacklight -dec 10 ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+# Loop through all attached batteries.
+for battery in /sys/class/power_supply/BAT?
+do
+	# Get its remaining capacity and charge status.
+	capacity=$(cat "$battery"/capacity 2>/dev/null) || break
+	status=$(sed "s/[Dd]ischarging/ /;s/[Nn]ot charging/ /;s/[Cc]harging/ /;s/[Uu]nknown/ /;s/[Ff]ull/ /" "$battery"/status)
+
+	 printf "%s" $(generategraph $capacity)
+
+done | sed 's/ *$//'

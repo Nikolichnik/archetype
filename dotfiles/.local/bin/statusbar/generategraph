@@ -1,0 +1,35 @@
+ #!/bin/sh
+ #
+ # Generates graph for the provided percentage
+
+ function generateGraph() {
+
+	 value=$1
+
+	 graph="〈○○○○○〉"
+
+	 if [ "$value" -le 10 ]
+	 then
+		# If the percentage is 10% or less, we will add a '!' as a warning.
+		 graph="!${graph}"
+	 elif [ "$value" -le 20 ]
+	 then
+		 graph="〈●○○○○〉"
+	 elif [ "$value" -le 40 ]
+	 then
+		 graph="〈●●○○○〉"
+	 elif [ "$value" -le 60 ]
+	 then
+		 graph="〈●●●○○〉"
+	 elif [ "$value" -le 80 ]
+	 then
+		 graph="〈●●●●○〉"
+	 elif [ "$value" -le 100 ]
+	 then
+		 graph="〈●●●●●〉"
+	 fi
+
+	echo $graph
+}
+
+echo $(generateGraph $1)

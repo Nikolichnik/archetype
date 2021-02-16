@@ -1,0 +1,65 @@
+xkb_keymap {
+    xkb_keycodes { include "evdev+aliases(qwerty)" };
+    xkb_types { include "complete" };
+    xkb_compatibility {
+        include "complete"
+
+        interpret Overlay1_Enable {
+            action = SetControls(controls=overlay1);
+        };
+
+    };
+    xkb_symbols {
+        include "pc"
+        include "us"
+        include "inet(evdev)"
+
+        key <SPCE> { [ Shift_L ] };
+        key <LFSH> { [ space ] };
+
+        key <CAPS> { [ Alt_L ] };
+        key <LALT> { [ Control_L ] };
+        key <LCTL> { [ Control_R ] };
+
+        key <RALT> { overlay1 = <DELE> };
+
+        key <AC01> {
+            type[Group1] = "ONE_LEVEL",
+            symbols[Group1] = [ Overlay1_Enable ]
+        };
+        key <RWIN> { [ a, A ] };
+
+        key <AD02> { overlay1 = <FK03> };
+        key <AD03> { overlay1 = <FK06> };
+        key <AD04> { overlay1 = <FK09> };
+        key <AD05> { overlay1 = <FK12> };
+        key <AD06> { overlay1 = <AE06> };
+        key <AD07> { overlay1 = <AE07> };
+        key <AD08> { overlay1 = <AE08> };
+        key <AD09> { overlay1 = <AE09> };
+        key <AD10> { overlay1 = <AE10> };
+        key <AD11> { overlay1 = <TLDE> };
+        key <AD12> { overlay1 = <HOME> };
+        key <BKSL> { overlay1 = <END> };
+        key <AC02> { overlay1 = <FK02> };
+        key <AC03> { overlay1 = <FK05> };
+        key <AC04> { overlay1 = <FK08> };
+        key <AC05> { overlay1 = <FK11> };
+        key <AC06> { overlay1 = <LEFT> };
+        key <AC07> { overlay1 = <DOWN> };
+        key <AC08> { overlay1 = <UP> };
+        key <AC09> { overlay1 = <RGHT> };
+        key <AC10> { overlay1 = <AE11> };
+        key <AC11> { overlay1 = <AE12> };
+        key <AB02> { overlay1 = <FK01> };
+        key <AB03> { overlay1 = <FK04> };
+        key <AB04> { overlay1 = <FK07> };
+        key <AB05> { overlay1 = <FK10> };
+        key <AB06> { overlay1 = <AE01> };
+        key <AB07> { overlay1 = <AE02> };
+        key <AB08> { overlay1 = <AE03> };
+        key <AB09> { overlay1 = <AE04> };
+        key <AB10> { overlay1 = <AE05> };
+    };
+    xkb_geometry { include "pc(pc104)" };
+};
