@@ -1,12 +1,16 @@
 #!/bin/sh
-# Luke's Auto Rice Boostrapping Script (LARBS)
-# by Luke Smith <luke@lukesmith.xyz>
+#
+# Archetype Script
+#
+# by nikolichnik <nikolichnik.exe@gmail.com>
+# inspired by LARBS by Luke Smith <luke@lukesmith.xyz>
+#
 # License: GNU GPLv3
 
 ### OPTIONS AND VARIABLES ###
 
 while getopts ":r:b:a:h" o; do case "${o}" in
-    r) archetyperepo=${OPTARG} && dialog --msgbox "$archetyperepo" 10 50 && git ls-remote "$archetyperepo" || exit 1 ;;
+    r) archetyperepo=${OPTARG} ;;
     b) repobranch=${OPTARG} ;;
     a) aurhelper=${OPTARG} ;;
     h) printf "Optional arguments for custom use:\\n  -r: Archetype repository\\n  -b: Archetype repository branch\\n  -a: AUR helper (must have pacman-like syntax)\\n  -h: Show this message\\n" && exit 1 ;;
@@ -139,13 +143,14 @@ putgitrepo() {
 # Clones the Archetype repository.
 clonearchetype() {
     dialog --infobox "\\nCloning the Archetype..." 5 60
+    git ls-remote "$archetyperepo" || error "Invalid Archetype repository."
     putgitrepo "$archetyperepo" "/home/$name/.archetype" "$repobranch"
 }
 
 installationloop() {
     progsfile=/home/"$name"/.archetype/programs/programs.csv
 
-    ([ -f "$progsfile" ] && cp "$progsfile" /tmp/programs.csv) || error "Missing programs.csv file..."
+    ([ -f "$progsfile" ] && cp "$progsfile" /tmp/programs.csv) || error "Missing programs.csv file."
 
     total=$(wc -l < /tmp/programs.csv)
     aurinstalled=$(pacman -Qqm)
