@@ -3,7 +3,7 @@
 .SHIFT_LIST 10p
 ..
 .PARA_SPACE 1m
-.TITLE "\s+(10A Friendly Guide to LARBS!\s0"
+.TITLE "\s+(10A Friendly Guide to Archetype!\s0"
 .AUTHOR "\s+5Luke Smith\s0"
 .DOCTYPE    DEFAULT
 .COPYSTYLE  FINAL
@@ -58,7 +58,7 @@ The menu button (usually between the right Alt and Ctrl) is an alternative Super
 This is to make one-handing on laptops easier.
 .LIST OFF
 If you'd like to change any of these keyboard changes, you need only open and change the \f(CWremaps\fP script.
-All custom scripts in LARBS are located in \f(CW~/.local/bin/\fP.
+All custom scripts in Archetype are located in \f(CW~/.local/bin/\fP.
 Actually, this should go without saying, but \fIeverything\fP here can easily be changed.
 Below in this document, there is information about where to change programs/components.
 .PP
@@ -121,7 +121,7 @@ To type capital letters, hold down the \f(CWShift\fP key\(emthat might sound lik
 .LIST OFF
 .HEADING 2 "Basic Programs"
 .PP
-\fINote:\fP LARBS will install nearly all of these programs by default, but some only come if you chose an extra option.
+\fINote:\fP Archetype will install nearly all of these programs by default, but some only come if you chose an extra option.
 Naturally, you can use \f(CWyay\fP to look for and install any you want to add.
 .LI
 .ITEM
@@ -158,7 +158,7 @@ Naturally, you can use \f(CWyay\fP to look for and install any you want to add.
 .ITEM
 \f(CWMod+F1\fP \(en Shows this document
 .ITEM
-\f(CWMod+Shift+F1\fP \(en Toggle the LARBS welcome message
+\f(CWMod+Shift+F1\fP \(en Toggle the Archetype welcome message
 .ITEM
 \f(CWMod+F2\fP \(en Refresh/reload i3
 .ITEM
@@ -252,7 +252,7 @@ buttons, screen brightness, email, web browsing buttons, etc.) to what you
 would expect.
 .HEADING 1 "Configuration"
 .PP
-Dotfiles/settings files are located in \f(CW~/.config/\fP, note that dotfiles to programs not included in LARBS are there as well by requests of users. I do not necessarily maintain all these dotfiles, but they remain as legacy.
+Dotfiles/settings files are located in \f(CW~/.config/\fP, note that dotfiles to programs not included in Archetype are there as well by requests of users. I do not necessarily maintain all these dotfiles, but they remain as legacy.
 .PP
 Suckless programs, st (the terminal) and dmenu among others do not have traditional config files, but have their source code location in \f(CW~/.local/src/\fP.
 There you can modify their \f(CWconfig.h\fP files, then \f(CWsudo make install\fP to reinstall.
@@ -260,7 +260,7 @@ There you can modify their \f(CWconfig.h\fP files, then \f(CWsudo make install\f
 .HEADING 1 "Frequently Asked Questions (FAQs)"
 .HEADING 2 "My keyboard isn't working as expected!"
 .PP
-LARBS runs some custom keyboard settings in \f(CW~/.xinitrc\fP.
+Archetype runs some custom keyboard settings in \f(CW~/.xinitrc\fP.
 These settings may override your preferred settings, so you should open this file and comment out troublesome lines if you have issues.
 .HEADING 2 "My audio isn't working!"
 .PP
@@ -281,12 +281,12 @@ The script \f(CWsetbg\fP, if run on an image will set it as the persistent backg
 When using the file manager, you can simply hover over an image name and type \f(CWbg\fP and this will run \f(CWsetbg\fP.
 .HEADING 2 "How I change the colorscheme?"
 .PP
-LARBS no longer deploys Xresource by default, but you can still add an \f(CW~/.Xdefaults\fP file and add color settings to change the theme of numerous programs, including the terminal. See
+Archetype no longer deploys Xresource by default, but you can still add an \f(CW~/.Xdefaults\fP file and add color settings to change the theme of numerous programs, including the terminal. See
 .PDF_WWW_LINK "https://wiki.archlinux.org/index.php/X_resources" "the Arch Wiki's article"
 for more information.
 .HEADING 2 "How do I set up my email?"
 .PP
-LARBS is automatically set up to be compatible with \f(CWmutt-wizard\fP, which is now in the AUR and can be installed by running \f(CWyay -S mutt-wizard-git\fP.
+Archetype is automatically set up to be compatible with \f(CWmutt-wizard\fP, which is now in the AUR and can be installed by running \f(CWyay -S mutt-wizard-git\fP.
 You can then add email accounts by running \f(CWmw add\fP.
 .PP
 Once you have successfully added your email address(es), you can open your mail with \f(CWneomutt\fP which is also bound to \f(CWMod+e\fP.
@@ -297,27 +297,17 @@ By default, mpd, the music daemon assumes that \f(CW~/Music\fP is your music dir
 This can be changed in \f(CW~/.config/mpd/mpd.conf\fP.
 When you add music to your music folder, you may have to run \f(CWmpc up\fP in the terminal to update the database.
 mpd is controlled by ncmpcpp, which is accessible by \f(CWMod+m\fP.
-.HEADING 2 "How do I update LARBS?"
+.HEADING 2 "How do I update Archetype?"
 .PP
-LARBS is deployed as a git repository in your home directory.
+Archetype is deployed as a git repository in your home directory.
 You can use it as such to fetch, diff and merge changes from the remote repository.
-If you don't want to do that or don't know how to use git, you can actually just rerun the script (as root) and reinstall LARBS and it will automatically update an existing install if you select the same username.
+If you don't want to do that or don't know how to use git, you can actually just rerun the script (as root) and reinstall Archetype and it will automatically update an existing install if you select the same username.
 This will overwrite the original config files though, including changes you made for them, but this is an easier brute force approach that will also install any new dependencies.
 .HEADING 1 "Contact"
 .LI
 .ITEM
-.PDF_WWW_LINK "mailto:luke@lukesmith.xyz" "luke@lukesmith.xyz"
-\(en For questions!
+.PDF_WWW_LINK "mailto:nikolichnik.exe@gmail.com" "nikolichnik.exe@gmail.com"
 .ITEM
-.PDF_WWW_LINK "http://lukesmith.xyz" "https://lukesmith.xyz"
-\(en For stalking!
-.ITEM
-.PDF_WWW_LINK "https://lukesmith.xyz/donate" "https://lukesmith.xyz/donate"
-\(en To incentivize more development of LARBS!
-.ITEM
-.PDF_WWW_LINK "https://github.com/LukeSmithxyz" "My Github Page"
+.PDF_WWW_LINK "https://github.com/nikolichnik" "My Github Page"
 \(en For the code behind it!
-.ITEM
-.PDF_WWW_LINK "http://lukesmith.xyz/rss.xml" "RSS"
-\(en For updates!
 .LIST OFF
