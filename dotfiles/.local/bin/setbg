@@ -7,7 +7,7 @@
 #	If wal is installed, also generates a colorscheme.
 
 # Location of link to wallpaper link.
-wallpaperloc="${XDG_DATA_HOME:-$HOME/.local/share/}/wallpaper"
+wallpaperloc="${XDG_DATA_HOME:-$HOME/.local/share/}/wallpapers/wallpaper"
 
 [ -f "$1" ] && ln -sf "$(readlink -f "$1")" "$wallpaperloc" && notify-send -i "$wallpaperloc" "Changing wallpaper..."
 

@@ -1,0 +1,58 @@
+#!/bin/sh
+
+### Functions, options and variables ###
+
+printhelp() {
+    printf "Usage:\\n  archetype [options] <action>\\n\\nOptions:\\n  -a      Specify custom Archetype repository\\n  -r      Remote switch - perform any of the actions on the remote Archetype repository\\n\\nActions:\\n  status  Check for discrepancies between the Archetype repository and deployed files\\n  pull    Pull changes from the Archetype repository\\n  push    Push changes to the Archetype repository\\n  sync    Perform synchronization between the Archetype repository and the deployed files\\n" && exit 1
+}
+
+error() {
+    printf "\\nERROR: $1\\n\\n" && printhelp
+}
+
+status() {
+    for dir in ${directories[*]}; do
+        rsync -anv --delete --progress $HOME/$dir $archetype/$dir
+    done
+}
+
+remotestatus() {
+    echo "remotestatus()"
+}
+
+pull() {
+    echo "pull()"
+}
+
+remotepull() {
+    echo "remotepull()"
+}
+
+push() {
+    echo "push()"
+}
+
+remotepush() {
+    echo "remotepush()"
+}
+
+sync() {
+    echo "sync()"
+}
+
+exec="$1"
+directories=(".config" ".local/bin" ".local/share/applications" ".local/share/archetype" ".local/share/wallpapers")
+
+while getopts ":r:h" o; do case "${o}" in
+    r) exec="remote${OPTARG}" ;;
+    a) archetype="${OPTARG}" ;;
+    h) printhelp ;;
+    *) printf "Invalid option: -%s\\n\\n" "$OPTARG" && printhelp ;;
+esac done
+
+[ -z "$exec" ] && exec=printhelp
+# [ -z "$archetype" ] && archetype=$HOME/.archetype
+[ -z "$archetype" ] && archetype=./dir1
+
+# Call one of the functions.
+eval $exec || error "Action '$exec' does not exist."
