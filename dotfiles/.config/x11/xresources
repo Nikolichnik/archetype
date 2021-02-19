@@ -1,8 +1,8 @@
 !! Transparency (0-1):
-*.alpha: 0.8
+*.alpha: 1
 
 !! Set a default font and font size as below:
-*.font: monospace:size=10
+*.font: SauceCodePro Nerd Font:size=9
 
 /* name		dark	light */
 /* black	0	8 */
@@ -154,3 +154,11 @@
 /* *.background: .color0 */
 /* *.color256: 0#1d2021 */
 /* *.color257: 15#ebdbb2 */
+
+!! Application specific properties
+
+!! dwm - does not work, needs xresources patch
+dwm.font: SauceCodePro Nerd Font:size=15
+
+!! dmenu
+dmenu.font: SauceCodePro Nerd Font:size=9
