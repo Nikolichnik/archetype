@@ -33,9 +33,13 @@ push() {
 }
 
 remotepush() {
+    commitcommand="git commit -m \"$1\""
+
+    [ -z "$exec" ] && commitcommand="git commit"
+
     cd $archetype
     git add .
-    git commit
+    eval "$commitcommand"
     git push
     cd - > /dev/null
 }
@@ -66,5 +70,5 @@ esac done
 [ -z "$archetype" ] && archetype=$HOME/.archetype
 # [ -z "$archetype" ] && archetype=./dir1
 
-# Call one of the functions.
-eval $exec || error "Action '$exec' does not exist."
+# Call one of the functions and pass any additional parameters.
+eval $exec "$2" "$3" "$4" || error "Action '$exec' does not exist."
