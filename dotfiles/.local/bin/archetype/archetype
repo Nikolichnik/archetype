@@ -71,4 +71,4 @@ esac done
 # [ -z "$archetype" ] && archetype=./dir1
 
 # Call one of the functions and pass any additional parameters.
-eval $exec "$2" "$3" "$4" || error "Action '$exec' does not exist."
+eval "$exec \"$2\" \"$3\" \"$4\"" || error "Action '$exec' does not exist."
