@@ -17,8 +17,7 @@ status() {
 }
 
 remotestatus() {
-    echo "remotestatus()"
-    cd $archetype && git status & cd -
+    cd $archetype && git status ; cd - > /dev/null
 }
 
 pull() {
@@ -26,7 +25,7 @@ pull() {
 }
 
 remotepull() {
-    echo "remotepull()"
+    cd $archetype && git pull ; cd - > /dev/null
 }
 
 push() {
@@ -34,7 +33,11 @@ push() {
 }
 
 remotepush() {
-    echo "remotepush()"
+    cd $archetype
+    git add .
+    git commit
+    git push
+    cd - > /dev/null
 }
 
 sync() {
