@@ -33,9 +33,9 @@ push() {
 }
 
 remotepush() {
-    commitcommand="git commit -m \"$1\""
+    commitcommand="git commit -m \"$2\""
 
-    [ -z "$exec" ] && commitcommand="git commit"
+    [ -z "$2" ] && commitcommand="git commit"
 
     cd $archetype
     git add .
