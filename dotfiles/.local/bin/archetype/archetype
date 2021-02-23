@@ -2,12 +2,12 @@
 
 ### Functions, options and variables ###
 
-printhelp() {
-    printlogo && cat ./help && exit 1
-}
-
 printlogo() {
     cat ./logo
+}
+
+printhelp() {
+    printlogo && cat ./help && exit 1
 }
 
 error() {
@@ -26,9 +26,9 @@ status() {
 
     if [ -n "$status" ]
     then
-	printf "\\nModified files:\\n\\n"
+	printf "Modified files:\\n\\n"
         printf $status | sed '/^$/d' | sed "s,.*,$(tput setaf 1)&$(tput sgr0),"
-	printf "\\n\\nUse 'archetype push' to update local Archetype repository.\\n"
+	printf "\\nUse 'archetype push' to update local Archetype repository.\\n"
     else
 	printf "\\nLocal repository up to date.\\n\\n"
     fi
