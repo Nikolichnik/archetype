@@ -6,16 +6,35 @@ printhelp() {
     printf "Usage:\\n  archetype [options] <action>\\n\\nOptions:\\n  -a      Specify custom Archetype repository\\n  -r      Remote switch - perform any of the actions on the remote Archetype repository\\n\\nActions:\\n  status  Check for discrepancies between the Archetype repository and deployed files\\n  pull    Pull changes from the Archetype repository\\n  push    Push changes to the Archetype repository\\n  sync    Perform synchronization between the Archetype repository and the deployed files\\n  progs   Check for discrepancies between installed packages and programs.csv\\n" && exit 1
 }
 
+printlogo() {
+    cat ./logo
+}
+
 error() {
     printf "\\nERROR: $1\\n\\n" && printhelp
 }
 
 status() {
+    status=""
+
     for dir in ${directories[*]}; do
 	cp ./.archetypeignore $HOME/$dir
-        rsync -anv --filter=':- .archetypeignore' $HOME/$dir/ $archetype/dotfiles/$dir/
+
+	status=$status$(rsync -anv --filter=':- .archetypeignore' $HOME/$dir/ $archetype/dotfiles/$dir/ | sed '/^\.\//d;/\/$/d;/^sent/d;/^sending/d;/^total/d')
+
+	[[ -n $status ]] && status=$status"\n"
+
 	rm $HOME/$dir/.archetypeignore
     done
+
+    if [ -n "$status" ]
+    then
+	printf "\\nModified files:\\n\\n"
+        printf $status | sed '/^$/d' | sed "s,.*,$(tput setaf 1)&$(tput sgr0),"
+	printf "\\nUse 'archetype push' to update local Archetype repository.\\n"
+    else
+	printf "\\nArchetype repository up to date.\\n\\n"
+    fi
 }
 
 remotestatus() {
@@ -79,6 +98,9 @@ esac done
 [ -z "$exec" ] && exec=printhelp
 [ -z "$archetype" ] && archetype=$HOME/.archetype
 # [ -z "$archetype" ] && archetype=./dir1
+
+# Print the logo
+printlogo
 
 # Call one of the functions and pass any additional parameters.
 eval "$exec \"$2\" \"$3\" \"$4\"" || error "Action '$exec' does not exist."
