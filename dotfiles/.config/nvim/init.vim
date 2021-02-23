@@ -24,7 +24,7 @@ Plug 'arzg/vim-colors-xcode'
 call plug#end()
 
 " Colorscheme
-" colorscheme xcodedark - will have to think about this one...
+" colorscheme xcodedark
 colorscheme default
 syntax on
 
