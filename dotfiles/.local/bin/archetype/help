@@ -1,0 +1,13 @@
+Usage:
+    archetype [options] <action>
+
+Options:
+    -a      Specify custom Archetype repository
+    -r      Remote switch - perform any of the actions on the remote Archetype repository
+
+Actions:
+    status  Check for discrepancies between the Archetype repository and deployed files
+    pull    Pull changes from the Archetype repository
+    push    Push changes to the Archetype repository
+    sync    Perform synchronization between the Archetype repository and the deployed files
+    progs   Check for discrepancies between installed packages and programs.csv
