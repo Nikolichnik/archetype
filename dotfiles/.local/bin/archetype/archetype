@@ -12,7 +12,9 @@ error() {
 
 status() {
     for dir in ${directories[*]}; do
-        rsync -anv --delete --progress $HOME/$dir $archetype/$dir
+	cp ./.archetypeignore $HOME/$dir
+        rsync -anv --filter=':- .archetypeignore' $HOME/$dir/ $archetype/dotfiles/$dir/
+	rm $HOME/$dir/.archetypeignore
     done
 }
 
@@ -29,7 +31,11 @@ remotepull() {
 }
 
 push() {
-    echo "push()"
+    for dir in ${directories[*]}; do
+	cp ./.archetypeignore $HOME/$dir
+        rsync -av --filter=':- .archetypeignore' $HOME/$dir/ $archetype/dotfiles/$dir/
+	rm $HOME/$dir/.archetypeignore
+    done
 }
 
 remotepush() {

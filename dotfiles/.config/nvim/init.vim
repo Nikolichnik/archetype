@@ -20,10 +20,12 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-commentary'
 Plug 'kovetskiy/sxhkd-vim'
 Plug 'ap/vim-css-color'
+Plug 'arzg/vim-colors-xcode'
 call plug#end()
 
 " Colorscheme
-colorscheme xcodedark
+" colorscheme xcodedark
+colorscheme default
 syntax on
 
 set go=a
