@@ -23,7 +23,11 @@ remotestatus() {
 }
 
 pull() {
-    echo "pull()"
+    for dir in ${directories[*]}; do
+	cp ./.archetypeignore $archetype/dotfiles/$dir
+        rsync -av --filter=':- .archetypeignore' $archetype/dotfiles/$dir/ $HOME/$dir/
+	rm $archetype/dotfiles/$dir/.archetypeignore
+    done
 }
 
 remotepull() {
