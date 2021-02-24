@@ -4,6 +4,7 @@ Usage:
 Options:
     -a      Specify custom Archetype repository
     -r      Remote switch - perform any of the actions on the remote Archetype repository
+    -h      Displays this information
 
 Actions:
     status  Check for discrepancies between the Archetype repository and deployed files

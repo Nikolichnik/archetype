@@ -1,36 +1,56 @@
 #!/bin/sh
-
-### Functions, options and variables ###
+#
+# Main Archetype script. Used to update local Arhetype repository with changes
+# made to dotfiles and scripts on the local machine and vice-versa.
+#
+# Usage:
+#     archetype [options] <action>
+#
+# Options:
+#     -a      Specify custom Archetype repository
+#     -r      Remote switch - perform any of the actions on the remote Archetype repository
+#
+# Actions:
+#     status  Check for discrepancies between the Archetype repository and deployed files
+#     pull    Pull changes from the Archetype repository
+#     push    Push changes to the Archetype repository
+#     sync    Perform synchronization between the Archetype repository and the deployed files
+#     progs   Check for discrepancies between installed packages and programs.csv
+#
+#
+# by nikolichnik <nikolichnik.exe@gmail.com>
+#
+# License: GNU GPLv3
 
 printlogo() {
     cat ./logo
 }
 
 printhelp() {
-    printlogo && cat ./help && exit 1
+    cat ./help && exit 1
 }
 
 error() {
-    printf "\\nERROR: $1\\n\\n" && printhelp
+    printf "\\nERROR: $1\\n\\n" | sed "s,.*,$(tput setaf 1)&$(tput sgr0)," && printhelp
 }
 
 status() {
     for dir in ${directories[*]}; do
 	cp ./.archetypeignore $HOME/$dir
-	rsync -anv --filter=':- .archetypeignore' $HOME/$dir/ $archetype/dotfiles/$dir/ | sed '/^$/d;/^\.\//d;/\/$/d;/^sent/d;/^sending/d;/^total/d' >> statusmessage
+	rsync -anv --filter=':- .archetypeignore' $HOME/$dir/ $archetype/dotfiles/$dir/ | sed '/^$/d;/^\.\//d;/\/$/d;/^sent/d;/^sending/d;/^total/d' >> ./statusmessage
 	rm $HOME/$dir/.archetypeignore
     done
 
-    if [ -s statusmessage ]
+    if [ -s ./statusmessage ]
     then
 	printf "Modified files:\\n\\n"
-        cat statusmessage | sed "s,.*,$(tput setaf 1)&$(tput sgr0),"
+        cat ./statusmessage | sed "s,.*,$(tput setaf 1)&$(tput sgr0),"
 	printf "\\nUse 'archetype push' to update local Archetype repository.\\n"
     else
 	printf "\\nLocal repository up to date.\\n\\n"
     fi
 
-    rm statusmessage
+    rm ./statusmessage
 }
 
 remotestatus() {
@@ -77,26 +97,20 @@ progs() {
     echo "progs()"
 }
 
-remoteprogs() {
-    error "Remote switch (-r) is not compatible with 'progs' action"
-}
-
 exec="$1"
-directories=(".config" ".local/bin" ".local/share/applications" ".local/share/archetype" ".local/share/wallpapers")
 
 while getopts ":r:h" o; do case "${o}" in
     r) exec="remote${OPTARG}" ;;
     a) archetype="${OPTARG}" ;;
-    h) printhelp ;;
-    *) printf "Invalid option: -%s\\n\\n" "$OPTARG" && printhelp ;;
+    h) printlogo && printhelp ;;
+    *) printlogo && error "Invalid option: -$OPTARG" ;;
 esac done
 
 [ -z "$exec" ] && exec=printhelp
 [ -z "$archetype" ] && archetype=$HOME/.archetype
-# [ -z "$archetype" ] && archetype=./dir1
 
-# Print the logo
-printlogo
+# Directories to include during synchronization
+directories=(".config" ".local/bin" ".local/share/applications" ".local/share/archetype" ".local/share/wallpapers")
 
-# Call one of the functions and pass any additional parameters.
-eval "$exec \"$2\" \"$3\" \"$4\"" || error "Action '$exec' does not exist."
+# Call one of the functions and pass additional parameters
+printlogo && type "$exec" &>/dev/null && eval "$exec \"$2\" \"$3\" \"$4\"" || error "Action '$exec' does not exist."
