@@ -15,23 +15,22 @@ error() {
 }
 
 status() {
-    statusmessage=""
-
     for dir in ${directories[*]}; do
 	cp ./.archetypeignore $HOME/$dir
-	statusmessage=$statusmessage$(rsync -anv --filter=':- .archetypeignore' $HOME/$dir/ $archetype/dotfiles/$dir/ | sed '/^\.\//d;/\/$/d;/^sent/d;/^sending/d;/^total/d')
-	[[ -n $statusmessage ]] && statusmessage=$statusmessage"\n"
+	rsync -anv --filter=':- .archetypeignore' $HOME/$dir/ $archetype/dotfiles/$dir/ | sed '/^\.\//d;/\/$/d;/^sent/d;/^sending/d;/^total/d' >> statusmessage
 	rm $HOME/$dir/.archetypeignore
     done
 
-    if [ -n "$statusmessage" ]
+    if [ -s statusmessage ]
     then
 	printf "Modified files:\\n\\n"
-        printf $statusmessage | sed '/^$/d' | sed "s,.*,$(tput setaf 1)&$(tput sgr0),"
+        cat statusmessage | sed '/^$/d' | sed "s,.*,$(tput setaf 1)&$(tput sgr0),"
 	printf "\\nUse 'archetype push' to update local Archetype repository.\\n"
     else
 	printf "\\nLocal repository up to date.\\n\\n"
     fi
+
+    rm statusmessage
 }
 
 remotestatus() {
