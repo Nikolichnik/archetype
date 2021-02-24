@@ -23,11 +23,11 @@
 # License: GNU GPLv3
 
 printlogo() {
-    cat ./logo
+    cat "$root"/logo
 }
 
 printhelp() {
-    cat ./help && exit 1
+    cat "$root"/help && exit 1
 }
 
 error() {
@@ -36,21 +36,21 @@ error() {
 
 status() {
     for dir in ${directories[*]}; do
-	cp ./.archetypeignore $HOME/$dir
-	rsync -anv --filter=':- .archetypeignore' $HOME/$dir/ $archetype/dotfiles/$dir/ | sed '/^$/d;/^\.\//d;/\/$/d;/^sent/d;/^sending/d;/^total/d' >> ./statusmessage
+	cp "$root"/.archetypeignore $HOME/$dir
+	rsync -anv --filter=':- .archetypeignore' $HOME/$dir/ $archetype/dotfiles/$dir/ | sed '/^$/d;/^\.\//d;/\/$/d;/^sent/d;/^sending/d;/^total/d' >> "$root"/statusmessage
 	rm $HOME/$dir/.archetypeignore
     done
 
-    if [ -s ./statusmessage ]
+    if [ -s "$root"/statusmessage ]
     then
 	printf "Modified files:\\n\\n"
-        cat ./statusmessage | sed "s,.*,$(tput setaf 1)&$(tput sgr0),"
+        cat "$root"/statusmessage | sed "s,.*,$(tput setaf 1)&$(tput sgr0),"
 	printf "\\nUse 'archetype push' to update local Archetype repository.\\n"
     else
 	printf "\\nLocal repository up to date.\\n\\n"
     fi
 
-    rm ./statusmessage
+    rm "$root"/statusmessage
 }
 
 remotestatus() {
@@ -59,7 +59,7 @@ remotestatus() {
 
 pull() {
     for dir in ${directories[*]}; do
-	cp ./.archetypeignore $archetype/dotfiles/$dir
+	cp "$root"/.archetypeignore $archetype/dotfiles/$dir
         rsync -av --filter=':- .archetypeignore' $archetype/dotfiles/$dir/ $HOME/$dir/
 	rm $archetype/dotfiles/$dir/.archetypeignore
     done
@@ -71,7 +71,7 @@ remotepull() {
 
 push() {
     for dir in ${directories[*]}; do
-	cp ./.archetypeignore $HOME/$dir
+	cp "$root"/.archetypeignore $HOME/$dir
         rsync -av --filter=':- .archetypeignore' $HOME/$dir/ $archetype/dotfiles/$dir/
 	rm $HOME/$dir/.archetypeignore
     done
@@ -97,20 +97,21 @@ progs() {
     echo "progs()"
 }
 
-exec="$1"
+root=$(dirname "$0")
+action="$1"
 
 while getopts ":r:h" o; do case "${o}" in
-    r) exec="remote${OPTARG}" ;;
+    r) action="remote${OPTARG}" ;;
     a) archetype="${OPTARG}" ;;
     h) printlogo && printhelp ;;
     *) printlogo && error "Invalid option: -$OPTARG" ;;
 esac done
 
-[ -z "$exec" ] && exec=printhelp
+[ -z "$action" ] && action=printhelp
 [ -z "$archetype" ] && archetype=$HOME/.archetype
 
 # Directories to include during synchronization
 directories=(".config" ".local/bin" ".local/share/applications" ".local/share/archetype" ".local/share/wallpapers")
 
 # Call one of the functions and pass additional parameters
-printlogo && type "$exec" &>/dev/null && eval "$exec \"$2\" \"$3\" \"$4\"" || error "Action '$exec' does not exist."
+printlogo && type "$action" &>/dev/null && eval "$action \"$2\" \"$3\" \"$4\"" || error "Action '$action' does not exist."
