@@ -1,0 +1,27 @@
+/* Archetype related files */
+.archetypeignore
+statusmessage
+
+/* For virtual machine testing purposes */
+x11/
+
+/* Brave browser */
+BraveSoftware/
+
+/* nvim */
+nvim/autoload/
+nvim/plugged/
+
+/* pulse */
+pulse/
+
+/* shell */
+shell/shortcutrc
+shell/zshnameddirrc
+
+/* zsh */
+zsh/.zcompdump*
+zsh/oh-my-zsh/
+
+/* Gimp */
+GIMP/
