@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Launches fzf search with preview in $EDITOR and opens
+# the chosen file in $EDITOR.
+#
+# by nikolichnik <nikolichnik.exe@gmail.com>
+#
+# License: GNU GPLv3
+
+file=$(find . -type f -not -path "./.cache/*" | fzf --preview 'nvim {}')
+[ -n "$file" ] && [ "./" != "$file" ] && nvim "$file"

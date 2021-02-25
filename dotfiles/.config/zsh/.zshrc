@@ -1,3 +1,6 @@
+# Plugins
+plugins=(fzf)
+
 # Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
@@ -23,6 +26,13 @@ _comp_options+=(globdots)		# Include hidden files.
 
 # Theme
 ZSH_THEME="bira"
+
+# Setup and load fzf
+export FZF_BASE=/usr/share/fzf
+export FZF_DEFAULT_OPTS='--no-height --layout=reverse'
+export FZF_COMPLETION_TRIGGER='**'
+source $FZF_BASE/completion.zsh
+source $FZF_BASE/key-bindings.zsh
 
 # Load oh-my-zsh
 source $ZDOTDIR/oh-my-zsh/oh-my-zsh.sh
@@ -51,6 +61,7 @@ function zle-keymap-select {
   fi
 }
 zle -N zle-keymap-select
+
 zle-line-init() {
     zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
     echo -ne "\e[5 q"
@@ -71,9 +82,11 @@ lfcd () {
 }
 bindkey -s '^o' 'lfcd\n'
 
-bindkey -s '^a' 'bc -l\n'
-
 bindkey -s '^f' 'cd "$(dirname "$(fzf)")"\n'
+
+bindkey -s '^p' 'fzv\n'
+
+bindkey -s '^a' 'bc -l\n'
 
 bindkey '^[[P' delete-char
 

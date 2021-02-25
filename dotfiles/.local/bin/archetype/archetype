@@ -94,7 +94,13 @@ sync() {
 }
 
 progs() {
-    echo "progs()"
+    awk -F "\"*,\"*" '{print $2}' $archetype/programs/programs.csv | sed '/^NAME/d;/^https/d' | sort > "$root"/archetypeprograms
+    pacman -Qqe | sort > "$root"/installedprograms
+
+    diff "$root"/installedprograms "$root"/archetypeprograms
+
+    rm "$root"/archetypeprograms
+    rm "$root"/installedprograms
 }
 
 root=$(dirname "$0")
