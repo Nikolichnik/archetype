@@ -7,5 +7,5 @@
 #
 # License: GNU GPLv3
 
-file=$(find . -type f -not -path "./.cache/*" | fzf --preview 'nvim {}')
-[ -n "$file" ] && [ "./" != "$file" ] && nvim "$file"
+file=$(find . -type f -not -path "./.cache/*" | fzf --preview '$EDITOR {}')
+[ -n "$file" ] && [ "./" != "$file" ] && $EDITOR "$file"

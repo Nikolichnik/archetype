@@ -1,5 +1,5 @@
 # Plugins
-# plugins=(fzf)
+# plugins=(fzf) # I am sourcing fzf files manually, could not make it work just by specifying plugin
 
 # Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
@@ -30,7 +30,7 @@ ZSH_THEME="bira"
 # Setup and load fzf
 export FZF_BASE=/usr/share/fzf
 export FZF_DEFAULT_OPTS='--no-height --layout=reverse'
-export FZF_COMPLETION_TRIGGER='**'
+export FZF_COMPLETION_TRIGGER=''
 source $FZF_BASE/completion.zsh
 source $FZF_BASE/key-bindings.zsh
 
