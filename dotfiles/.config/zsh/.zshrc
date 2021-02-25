@@ -1,5 +1,5 @@
 # Plugins
-plugins=(fzf)
+# plugins=(fzf)
 
 # Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
