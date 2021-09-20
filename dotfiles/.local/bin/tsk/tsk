@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# Main tsk script.
+#
+# by nikolichnik <nikolichnik.exe@gmail.com>
+#
+# License: GNU GPLv3
+
+printlogo() {
+        cat "$root"/logo
+}
+
+printhelp() {
+        cat "$root"/help && exit 1
+}
+
+error() {
+        printf "\\nERROR: $1\\n\\n" | sed "s,.*,$(tput setaf 1)&$(tput sgr0)," && printhelp
+}
+
+customecho() {
+	IFS='|' read -r -a data <<< "$2"
+
+	id=$(echo "${data[1]}" | xargs)
+	description=$(echo "${data[2]}" | xargs)
+	release=$(echo "${data[3]}" | xargs)
+	environment=$(echo "${data[4]}" | xargs)
+	status=$(echo "${data[5]}" | xargs)
+	receivedOn=$(echo "${data[6]}" | xargs)
+	timeSpent=$(echo "${data[7]}" | xargs)
+
+	printf "ID: $id \n"
+	printf "Description: $description \n"
+	printf "Release: $release \n"
+	printf "Environment: $environment \n"
+	printf "Status: $status \n"
+	printf "Received on: $receivedOn \n"
+	printf "Time spent: $timeSpent \n"
+}
+
+
+root=$(dirname "$0")
+action="$1"
+
+while getopts ":h" o; do case "${o}" in
+        h) printlogo && printhelp ;;
+        *) printlogo && error "Invalid option: -$OPTARG" ;;
+esac done
+
+[ -z "$action" ] && action=printhelp
+
+# Call one of the functions and pass additional parameters
+printlogo && type "$action" &>/dev/null && eval "$action \"$2\" \"$3\" \"$4\"" || error "Action '$action' does not exist."

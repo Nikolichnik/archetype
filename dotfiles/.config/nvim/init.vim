@@ -21,6 +21,9 @@ Plug 'tpope/vim-commentary'
 Plug 'kovetskiy/sxhkd-vim'
 Plug 'ap/vim-css-color'
 Plug 'arzg/vim-colors-xcode'
+Plug 'godlygeek/tabular'
+Plug 'gabrielalana/vim-markdown'
+Plug 'fabi1cazenave/termopen'
 call plug#end()
 
 " Colorscheme
@@ -180,3 +183,39 @@ endif
 
 " Have dwmblocks automatically recompile and run when you edit its config.h
 autocmd BufWritePost ~/.local/src/dwmblocks/config.h !cd ~/.local/src/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
+
+" tsk related
+"------------------------------------------------------------------------------
+
+" map <leader>j :e ./<C-R><C-W>/<C-R><C-W><CR>
+map <leader>j :call OpenTask()<CR>
+map <leader>r :call OpenTaskDir()<CR>
+map <leader>w :echo .w
+map <leader>k :call EchoRow()<CR>
+
+function OpenTask()
+	normal! 0w"xyiw
+	let l:task = getreg('x')
+
+	:execute ":e ./".l:task."/".l:task
+endfunction
+
+function OpenTaskDir()
+	normal! 0w"xyiw
+	let l:dir = getreg('x')
+
+	:execute ":call TermOpen('ranger ".l:dir."', 't')"
+	set showtabline=0
+endfunction
+
+function EchoRow()
+	normal! ^"xyg_``
+	let l:row = getreg('x')
+	let l:path = expand('%:p:h')
+	let l:pathWithFileName = expand('%:p')
+
+	:execute '!bash ~/.local/bin/tsk/tsk customecho' shellescape(l:path) shellescape(l:row)
+	set showtabline=0
+endfunction
+
+"------------------------------------------------------------------------------
